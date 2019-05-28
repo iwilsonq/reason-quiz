@@ -116,20 +116,22 @@ let make = () => {
       <Text.Heading> "A Reasonable Quiz" </Text.Heading>
       <Text> "Create a quiz built of radio questions" </Text>
     </header>
-    <Form
-      onSubmit={e => {
-        ReactEvent.Form.preventDefault(e);
-        dispatch(SaveQuiz);
-      }}>
-      <div className="mb-8"> renderQuestions </div>
-      <footer className="flex items-center justify-between">
-        <Button
-          title="Add Question"
-          intent=Button.Secondary
-          onClick={_e => dispatch(AddQuestion)}
-        />
-        <Button title="Save" type_="submit" intent=Button.Primary />
-      </footer>
-    </Form>
+    <div className="max-w-3xl mx-auto">
+      <Form
+        onSubmit={e => {
+          ReactEvent.Form.preventDefault(e);
+          dispatch(SaveQuiz);
+        }}>
+        <div className="mb-8"> renderQuestions </div>
+        <footer className="flex items-center justify-between">
+          <Button
+            title="Add Question"
+            intent=Button.Secondary
+            onClick={_e => dispatch(AddQuestion)}
+          />
+          <Button title="Save" type_="submit" intent=Button.Primary />
+        </footer>
+      </Form>
+    </div>
   </main>;
 };
