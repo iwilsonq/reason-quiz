@@ -1,3 +1,4 @@
+open Types;
 let valueFromEvent = (evt): string => evt->ReactEvent.Form.target##value;
 
 [@react.component]
@@ -10,21 +11,21 @@ let make =
     ) => {
   let renderOptions =
     question.options
-    |> List.mapi((i, option: Question.questionOption) =>
-         <div>
-           <label htmlFor="options">
-             <span>
-               {"Option " ++ string_of_int(i + 1) |> React.string}
-             </span>
-             <br />
-             <input
+    |> List.mapi((i, option: QuestionOption.t) =>
+         <div className="mb-2" key={option.id}>
+           <label htmlFor={option.id}>
+             <div>
+               <Text.Span> {"Option " ++ string_of_int(i + 1)} </Text.Span>
+             </div>
+             <Form.Input
+               id={option.id}
                type_="text"
                placeholder="an answer..."
                value={option.title}
                onChange={e =>
                  onChangeQuestionOption(
-                   question.title,
-                   option.title,
+                   question.id,
+                   option.id,
                    valueFromEvent(e),
                  )
                }
@@ -35,27 +36,31 @@ let make =
     |> Array.of_list
     |> React.array;
 
-  <section>
-    <div>
-      <label htmlFor="question">
-        <span> {"What do you want to ask?" |> React.string} </span>
-        <br />
-        <input
+  <section className="border-b-2 pb-4 mb-4 border-gray-200">
+    <div className="mb-4">
+      <label htmlFor={question.id}>
+        <div>
+          <Text.Span uppercase=true> "What do you want to ask?" </Text.Span>
+        </div>
+        <Form.Input
+          id={question.id}
           type_="text"
           placeholder="the question..."
           value={question.title}
           onChange={e =>
-            onChangeQuestionTitle(question.title, valueFromEvent(e))
+            onChangeQuestionTitle(question.id, valueFromEvent(e))
           }
         />
       </label>
     </div>
     <div>
-      <span> {"What are possible answers?" |> React.string} </span>
+      <Text.Span uppercase=true> "What are possible answers?" </Text.Span>
       renderOptions
     </div>
-    <button onClick={_e => onAddOption(question.title)}>
-      {"Add Option" |> React.string}
-    </button>
+    <Button
+      title="Add Option"
+      intent=Button.Link
+      onClick={_e => onAddOption(question.title)}
+    />
   </section>;
 };
